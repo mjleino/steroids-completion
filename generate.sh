@@ -1,5 +1,27 @@
 #!/bin/bash
+output=steroids-completion
 steroidsurl="https://raw.github.com/AppGyver/steroids/master/src/steroids.coffee"
-opts=$(curl -s $steroidsurl | grep '^\s\+when ".*"$' | sed -e 's/when //' -e 's/[ "]//g' | tr '\n' ' ' )
-sed "s/%OPTS%/$opts/" < steroids.template > steroids
-chmod +x steroids
+OPTS=$(curl -s $steroidsurl | grep '^\s\+when ".*"$' | sed -e 's/when //' -e 's/[ "]//g' | tr '\n' ' ' )
+cat > $output <<TEMPLATE
+# skeleton bash completion for steroids
+# steroids? https://github.com/AppGyver/steroids 
+_steroids() {
+	local cur prev opts
+	COMPREPLY=()
+	cur="\${COMP_WORDS[COMP_CWORD]}"
+	prev="\${COMP_WORDS[COMP_CWORD-1]}"
+	opts="$OPTS"
+	case "\${prev}" in
+		steroids)
+			COMPREPLY=( \$(compgen -W "\${opts}" -- \${cur}) )
+			return 0
+			;;
+		*)
+			_filedir
+			return 0
+			;;
+	esac
+}
+complete -F _steroids steroids
+TEMPLATE
+chmod +x $output
