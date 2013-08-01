@@ -17,7 +17,7 @@ _steroids() {
 			return 0
 			;;
 		*)
-			_filedir
+			COMPREPLY=( \$(compgen -o default \${cur}) )
 			return 0
 			;;
 	esac
