@@ -1,6 +1,6 @@
 #!/bin/bash
 output=steroids-completion
-steroidsurl="https://raw.github.com/AppGyver/steroids/master/src/steroids.coffee"
+steroidsurl="https://raw.githubusercontent.com/AppGyver/steroids/master/src/steroids.coffee"
 OPTS=$(curl -s $steroidsurl | grep '^\s\+when ".*"$' | sed -e 's/when //' -e 's/[ "]//g' | tr '\n' ' ' )
 cat > $output <<TEMPLATE
 # skeleton bash completion for steroids
